@@ -12,7 +12,7 @@ A portable set of rules and configurations to keep a high-quality standard acros
 ## Quick Start
 1. Clone this repository:
    ```bash
-   git clone https://github.com/<your-username>/cursor-quality-rules.git
+   git clone https://github.com/AndresED/cursor-quality-rules.git
    cd cursor-quality-rules
    ```
 2. Copy the files into a project root (or make this a Git submodule / template repo).
