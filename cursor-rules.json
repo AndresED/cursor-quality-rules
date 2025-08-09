@@ -25,7 +25,7 @@
     {
       "id": "fx-complexity",
       "trigger": "**/*.ts",
-      "instruction": "Keep functions \u2264 50 lines, \u2264 4 parameters, nesting depth \u2264 3, and cyclomatic complexity \u2264 15. Extract helpers if these limits are exceeded."
+      "instruction": "Keep functions ≤ 50 lines, ≤ 4 parameters, nesting depth ≤ 3, and cyclomatic complexity ≤ 15. Extract helpers if these limits are exceeded."
     },
     {
       "id": "errors-exceptions",
@@ -48,9 +48,114 @@
       "instruction": "Enable Helmet, CORS with allowlist, and rate limiting. Sanitize inputs. Avoid eval. Use parameterized queries with ORM/driver; never build SQL by string concatenation."
     },
     {
+      "id": "security-boundaries",
+      "trigger": "**/*.ts",
+      "instruction": "HTTP/DB clients must set timeouts and handle cancellation. Do not log secrets. Sanitize inputs and use parameterized queries. Enable Helmet, CORS allowlist and rate limiting."
+    },
+    {
+      "id": "clean-code-naming",
+      "trigger": "**/*.ts",
+      "instruction": "Use descriptive names. Booleans start with is/has/can; functions are verbs; types/interfaces are PascalCase; variables/constants are camelCase; enums are PascalCase; enum members are UPPER_SNAKE_CASE."
+    },
+    {
+      "id": "single-responsibility",
+      "trigger": "**/*.ts",
+      "instruction": "Each function/class should have a single reason to change. If a function handles validation, mapping, IO or calculations, split them into dedicated functions/services."
+    },
+    {
+      "id": "avoid-side-effects",
+      "trigger": "**/*.ts",
+      "instruction": "Avoid hidden side effects. Prefer pure functions. If a function mutates state or calls IO, document it and isolate it behind a clear interface."
+    },
+    {
+      "id": "immutable-data",
+      "trigger": "**/*.ts",
+      "instruction": "Prefer immutability: use const, do not reassign parameters, clone before mutating structures. Avoid sharing mutable objects across layers."
+    },
+    {
+      "id": "guard-clauses",
+      "trigger": "**/*.ts",
+      "instruction": "Use early returns (guard clauses) to reduce nesting. Validate inputs at the start and return early."
+    },
+    {
+      "id": "error-boundaries",
+      "trigger": "**/*.ts",
+      "instruction": "All external boundaries (DB, HTTP, FS, 3rd parties) must be protected with timeouts, retries with backoff, and error handling that preserves the stack and context."
+    },
+    {
+      "id": "domain-boundaries",
+      "trigger": "**/*.ts",
+      "instruction": "Respect layered architecture: controllers do not contain business rules; use cases/services do not access Express/Nest internals; repositories do not expose ORM details."
+    },
+    {
+      "id": "docstrings-minimal",
+      "trigger": "**/*.ts",
+      "instruction": "Document public exported functions with a brief summary, relevant parameters, and pre/postconditions if applicable. Avoid redundant comments."
+    },
+    {
+      "id": "imports-order",
+      "trigger": "**/*.ts",
+      "instruction": "Order imports: 1) node/builtins, 2) packages, 3) aliases (e.g. @app/*), 4) relatives. Separate groups with blank lines."
+    },
+    {
+      "id": "promise-safety",
+      "trigger": "**/*.ts",
+      "instruction": "Do not leave floating promises. Always await or handle errors explicitly."
+    },
+    {
       "id": "testing-practices",
       "trigger": "**/*.spec.ts",
-      "instruction": "Write tests following AAA (Arrange-Act-Assert), use business-centric descriptions, prefer one main expect per test, mock dependencies with jest.spyOn/fakes, separate unit and e2e tests, use data builders, and target \u226580% coverage."
+      "instruction": "Write tests following AAA (Arrange-Act-Assert), use business-centric descriptions, prefer one main expect per test, mock dependencies with jest.spyOn/fakes, separate unit and e2e tests, use data builders, and target ≥80% coverage."
+    },
+    {
+      "id": "tests-aaa",
+      "trigger": "**/*.spec.ts",
+      "instruction": "Structure tests using Arrange-Act-Assert, with clear naming, one main assertion per test, and mocks via jest.spyOn or fakes."
+    },
+    {
+      "id": "tests-doubles",
+      "trigger": "**/*.spec.ts",
+      "instruction": "Prefer test doubles over real IO. No network/file/DB access in unit tests; mock repositories and HTTP clients."
+    },
+    {
+      "id": "tests-coverage-focus",
+      "trigger": "**/*.spec.ts",
+      "instruction": "Cover happy path, main error path, and boundary conditions. For public APIs, include at least one e2e scenario separate from units."
+    },
+    {
+      "id": "conversation-budget",
+      "trigger": "**",
+      "instruction": "Keep responses concise by default. Use a plan-then-act style: first produce a 3–5 bullet plan, then the minimal diff or code needed. Avoid verbose re-explanations unless explicitly asked."
+    },
+    {
+      "id": "rolling-summary-every-5",
+      "trigger": "**",
+      "instruction": "Every ~5 turns (or when the conversation becomes unclear), generate/update a persistent summary file at .cursor/SESSION_STATE.md capturing: Problem, Constraints, Decisions (with dates), Open Items (with owners), Next Step. Always read this file before continuing."
+    },
+    {
+      "id": "state-first-then-work",
+      "trigger": "**",
+      "instruction": "Before proposing changes, read .cursor/SESSION_STATE.md and restate in 3 bullets how the requested change aligns with Decisions and Next Step. If misaligned, request a quick confirmation with a one-line question."
+    },
+    {
+      "id": "large-input-guard",
+      "trigger": "**",
+      "instruction": "When the user pastes large content (>150 lines) or mixed logs+code, produce a 10–15 line structured TL;DR first and extract explicit action items; only then proceed with diffs."
+    },
+    {
+      "id": "delta-edits-preference",
+      "trigger": "**/*.ts",
+      "instruction": "Prefer minimal diffs/patches over full file rewrites. Show before/after for only the changed regions, not the entire file."
+    },
+    {
+      "id": "checkpoint-on-ambiguity",
+      "trigger": "**",
+      "instruction": "If context feels contradictory or stale, pause and refresh .cursor/SESSION_STATE.md (merge current facts). Ask one short yes/no to confirm the updated Decisions before continuing."
+    },
+    {
+      "id": "token-aware-summaries",
+      "trigger": "**",
+      "instruction": "When answers risk exceeding context, collapse prior details into a compact outline and reference .cursor/SESSION_STATE.md instead of repeating long history."
     }
   ],
   "examples": [

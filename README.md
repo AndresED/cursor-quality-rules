@@ -1,30 +1,102 @@
 # Cursor Quality Rules
 
-A portable set of rules and configurations to keep a high-quality standard across **JavaScript/TypeScript** projects using **NestJS**. Keep this repo as a template to bootstrap new machines and projects quickly.
+A portable set of rules and configurations to keep a high-quality standard across **JavaScript/TypeScript** projects using **NestJS**.  
+This repository also includes workflow rules to improve long-running interactions in Cursor by maintaining an **external session state**.
 
-## Contents
-- **cursor-rules.json**: generation rules for Cursor (no emojis/icons anywhere, consistent logging, TypeScript best practices).
-- **.eslintrc.json**: ESLint configuration focused on safety, correctness and readability.
-- **tsconfig.json**: strict TypeScript settings.
-- **jest.config.ts**: Jest config with minimum coverage thresholds.
-- **snippets/**: reusable NestJS snippets (Logger, ValidationPipe, Timing Interceptor).
+---
 
-## Quick Start
-1. Clone this repository:
+## 📂 Contents
+
+- **cursor-rules.json** → Core generation rules for Cursor (code quality, architecture, testing, security, clean code).
+- **.eslintrc.json** → ESLint configuration focused on safety, correctness, and readability.
+- **tsconfig.json** → Strict TypeScript settings.
+- **jest.config.ts** → Jest config with minimum coverage thresholds.
+- **snippets/** → Reusable NestJS snippets (Logger, ValidationPipe, Timing Interceptor).
+- **.cursor/SESSION_STATE.md** → External session state file to persist conversation context across multiple turns.
+
+---
+
+## 🚀 Quick Start
+
+1. **Clone the repository**:
    ```bash
    git clone https://github.com/AndresED/cursor-quality-rules.git
    cd cursor-quality-rules
    ```
-2. Copy the files into a project root (or make this a Git submodule / template repo).
-3. Adjust settings as needed for your stack.
 
-## Why this repository?
-- Enforces consistent, readable code.
-- Reduces common runtime errors by leveraging strict TypeScript and ESLint rules.
-- Promotes good testing habits with clear coverage goals.
-- Normalizes logging for easier debugging, while protecting sensitive data.
+2. **Copy configuration files** to the root of your project:
+   ```bash
+   cp cursor-rules.json .cursor/rules/
+   cp .eslintrc.json tsconfig.json jest.config.ts ./
+   cp -r snippets/ ./
+   ```
 
-## Recommended usage with Cursor
-- Import **cursor-rules.json** into your Cursor rules.
-- Keep the **snippets/** folder handy for new NestJS services.
-- Treat this repo as your **source of truth** for code quality across machines.
+3. **Install dependencies** in your project:
+   ```bash
+   npm install eslint @typescript-eslint/eslint-plugin @typescript-eslint/parser prettier eslint-config-prettier --save-dev
+   npm install jest ts-jest @types/jest --save-dev
+   ```
+
+4. **Enable rules in Cursor**:
+   - Open the Command Palette (**Ctrl + Shift + P** / **Cmd + Shift + P** on Mac).
+   - Search for `Cursor: Open Rules`.
+   - Replace or merge with the content from `cursor-rules.json`.
+   - Save.
+
+---
+
+## 🧠 Memory Refresh Rules in Cursor
+
+Long conversations with Cursor can slow down or lose context.  
+To prevent this, this repository adds **workflow rules** and a **state file** (`.cursor/SESSION_STATE.md`) that Cursor updates periodically.
+
+### How it works
+- **Every ~5 turns** or when context feels stale, Cursor generates/updates a summary in `SESSION_STATE.md`.
+- Cursor reads this file before continuing work, ensuring it always has an up-to-date overview of the project.
+- The file contains:
+  - **Problem / Goal** → Current objective in one line.
+  - **Constraints** → Technical and functional limitations.
+  - **Decisions (with date)** → Key decisions with timestamp.
+  - **Open Items** → Pending questions or tasks.
+  - **Next Step** → The single most important next action.
+  - **Links / Files of Record** → Quick references to important files or tickets.
+
+### Example `SESSION_STATE.md`
+```markdown
+# Session State (last updated: 2025-08-09)
+
+## Problem / Goal
+- Refactor authentication service to use AWS Cognito.
+
+## Constraints
+- Must keep compatibility with existing JWT consumers.
+- Follow current NestJS modular structure.
+
+## Decisions (with date)
+- [2025-08-08] Use `nestjs-cognito` wrapper for simpler integration.
+
+## Open Items
+- [Andres] Confirm if we migrate existing user pool or create a new one.
+
+## Next Step
+- Implement Cognito service and write integration tests.
+
+## Links / Files of Record
+- /src/modules/auth
+- Jira ticket AUTH-243
+```
+
+---
+
+## ✅ Benefits
+
+- **Code Quality** → Enforces clean code, architecture boundaries, and testing discipline.
+- **Security** → Guards against logging sensitive data and enforces safe patterns.
+- **Performance** → Encourages pagination, streaming, and efficient queries.
+- **Context Persistence** → Reduces loss of context in Cursor with an external session state.
+- **Portability** → Can be cloned and applied in new machines/projects instantly.
+
+---
+
+## 📜 License
+MIT License
