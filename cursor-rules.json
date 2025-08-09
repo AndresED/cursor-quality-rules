@@ -1,0 +1,68 @@
+{
+  "name": "Quality Rules - JS/TS + NestJS",
+  "description": "Rules to improve quality, readability, testing, performance and security. No icons/emojis anywhere.",
+  "rules": [
+    {
+      "id": "no-emojis-anywhere",
+      "trigger": "**",
+      "instruction": "Never use icons, emoticons or emojis in comments, documentation, logs or any output. If present, remove them immediately."
+    },
+    {
+      "id": "logging-format",
+      "trigger": "**",
+      "instruction": "When generating logs with console or NestJS Logger, format objects using JSON.stringify(obj, null, 2). Never log secrets (tokens, passwords, PHI/PII)."
+    },
+    {
+      "id": "prefer-nullish-coalescing",
+      "trigger": "**",
+      "instruction": "Prefer ?? over || for default values. Use optional chaining (?.) and nullish coalescing (??) for optional properties."
+    },
+    {
+      "id": "ts-strict",
+      "trigger": "**/*.ts",
+      "instruction": "Avoid 'any' (use 'unknown' when necessary). Avoid non-null assertion (!) unless a brief justification is provided in a comment. Always use ===/!==. Prefer const and readonly when possible."
+    },
+    {
+      "id": "fx-complexity",
+      "trigger": "**/*.ts",
+      "instruction": "Keep functions \u2264 50 lines, \u2264 4 parameters, nesting depth \u2264 3, and cyclomatic complexity \u2264 15. Extract helpers if these limits are exceeded."
+    },
+    {
+      "id": "errors-exceptions",
+      "trigger": "**/*.ts",
+      "instruction": "Do not throw string literals. Throw Error or custom classes extending Error. If you catch an error, rethrow it or wrap with additional context. Do not swallow errors."
+    },
+    {
+      "id": "nestjs-architecture",
+      "trigger": "**/*.ts",
+      "instruction": "In NestJS: thin controllers (no business logic), services hold business logic, DTOs validated with class-validator/transformer, and a global ValidationPipe with whitelist/forbidNonWhitelisted/transform."
+    },
+    {
+      "id": "persistence-and-performance",
+      "trigger": "**/*.ts",
+      "instruction": "Use pagination for listings, avoid N+1 queries, define indices for frequently queried fields, process large datasets via streaming/pagination, and apply timeouts/retries/backoff/circuit breaker to outbound calls."
+    },
+    {
+      "id": "security-basics",
+      "trigger": "**/*.ts",
+      "instruction": "Enable Helmet, CORS with allowlist, and rate limiting. Sanitize inputs. Avoid eval. Use parameterized queries with ORM/driver; never build SQL by string concatenation."
+    },
+    {
+      "id": "testing-practices",
+      "trigger": "**/*.spec.ts",
+      "instruction": "Write tests following AAA (Arrange-Act-Assert), use business-centric descriptions, prefer one main expect per test, mock dependencies with jest.spyOn/fakes, separate unit and e2e tests, use data builders, and target \u226580% coverage."
+    }
+  ],
+  "examples": [
+    {
+      "title": "Consistent logs (NestJS)",
+      "before": "logger.log({ orderId, status });",
+      "after": "logger.log(JSON.stringify({ orderId, status }, null, 2));"
+    },
+    {
+      "title": "Default values",
+      "before": "const limit = req.query.limit || 50;",
+      "after": "const limit = req.query.limit ?? 50;"
+    }
+  ]
+}
